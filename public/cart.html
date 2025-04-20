@@ -1,0 +1,34 @@
+<!-- public/cart.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h2>Your Cart</h2>
+  <div id="cart" class="cart-container"></div>
+
+  <script>
+    fetch('/cart')
+      .then(res => res.json())
+      .then(data => {
+        const cartDiv = document.getElementById('cart');
+        if (data.length === 0) {
+          cartDiv.innerHTML = '<p>Your cart is empty.</p>';
+          return;
+        }
+        data.forEach(item => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'cart-item';
+          itemDiv.innerHTML = `
+            <h4>${item.name}</h4>
+            <p>₹${item.price.toFixed(2)} x ${item.quantity}</p>
+          `;
+          cartDiv.appendChild(itemDiv);
+        });
+      });
+  </script>
+</body>
+</html>
